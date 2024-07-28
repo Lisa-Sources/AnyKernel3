@@ -1,0 +1,61 @@
+on property:vendor.post_boot.parsed=1
+	# Limit max perf event processing time to this much CPU usage
+    write /proc/sys/kernel/perf_cpu_time_max_percent 15
+
+	# Execute child process before parent after fork
+	write /proc/sys/kernel/sched_child_runs_first 1
+
+	# Always allow sched boosting on top-app tasks
+	write /proc/sys/kernel/sched_min_task_util_for_colocation 0
+
+	# Start blocking writeback later
+	write /proc/sys/vm/dirty_ratio 30
+
+	# Enable Explicit Congestion Control
+	write /proc/sys/net/ipv4/tcp_ecn 1
+
+	# Enable fast socket open for receiver and sender
+	write /proc/sys/net/ipv4/tcp_fastopen 3
+
+	# Prefer to schedule top-app tasks on idle CPUs
+	write /dev/stune/top-app/schedtune.prefer_idle 1
+
+	# Mark top-app as boosted, find high-performing CPUs
+	write /dev/stune/top-app/schedtune.boost 1
+
+    # Workqueue Affinity to reduce jitter 
+	# Set to cpu 0-1 and more conservative
+	# https://bitsum.com/tools/cpu-affinity-calculator/
+    write /sys/devices/virtual/workqueue/cpumask 3
+
+	# Setup runtime cpusets
+    write /dev/cpuset/top-app/cpus 0-7
+    write /dev/cpuset/background/cpus 0-1
+    write /dev/cpuset/system-background/cpus 0-3
+    write /dev/cpuset/audio-app/cpus 1-2
+    write /dev/cpuset/restricted/cpus 0-3
+    setprop dalvik.vm.dex2oat-cpu-set 0,1,2,3,4,5,6
+    setprop dalvik.vm.dex2oat-threads 6
+    setprop ro.opengles.version 196610
+    						#debug.hwui.renderer opengl#
+
+	# Configure scheduler
+    write /proc/sys/kernel/sched_upmigrate "65 85"
+    write /proc/sys/kernel/sched_downmigrate "60 75"
+    write /proc/sys/kernel/sched_group_upmigrate 95
+    write /proc/sys/kernel/sched_group_downmigrate 75
+    write /sys/devices/system/cpu/cpu0/core_ctl/enable 0
+    write /sys/devices/system/cpu/cpu4/core_ctl/enable 0
+   	write /sys/devices/system/cpu/cpu7/core_ctl/enable 0
+
+    # Enable suspend to RAM
+    write /sys/power/mem_sleep "deep"
+
+    setprop ro.product.model 23116PN5BC
+
+    write /sys/class/kgsl/kgsl-3d0/throttling 0
+    write /sys/class/kgsl/kgsl-3d0/bus_split 0
+    write /sys/class/kgsl/kgsl-3d0/force_bus_on 1
+    write /sys/class/kgsl/kgsl-3d0/force_rail_on 1
+    write /sys/class/kgsl/kgsl-3d0/force_clk_on 1
+

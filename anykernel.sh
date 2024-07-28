@@ -62,6 +62,10 @@ if mountpoint -q /data; then
   done
 fi
 
+## AnyKernel file attributes
+# set permissions/ownership for included ramdisk files
+set_perm_recursive 0 0 755 644 $ramdisk/*;
+set_perm_recursive 0 0 750 750 $ramdisk/init* $ramdisk/sbin;
 
 # shell variables
 block=boot;
@@ -72,18 +76,18 @@ patch_vbmeta_flag=auto;
 
 ## AnyKernel methods (DO NOT CHANGE)
 # import patching functions/variables - see for reference
-. tools/ak3-core.sh;
-
-## AnyKernel file attributes
-# set permissions/ownership for included ramdisk files
-set_perm_recursive 0 0 755 644 $ramdisk/*;
-set_perm_recursive 0 0 750 750 $ramdisk/init* $ramdisk/sbin;
+. tools/ak3-core.sh && attributes;
 
 ## AnyKernel boot install
 dump_boot;
 
 write_boot;
 ## end boot install
+
+# migrate from /overlay to /overlay.d to enable SAR Magisk
+if [ -d $ramdisk/overlay ]; then
+  rm -rf $ramdisk/overlay;
+fi;
 
 
 # shell variables
