@@ -1,0 +1,13 @@
+ *****************
+Optimisation by
+ +Graphite 
+ +MLGO         
+ +Hot cold split 
+ +Inlin
+ +Clang
+ +Snapdragon
+ +Polly
+ +LTO
+ +PGO
+ +-O3
+ *****************
