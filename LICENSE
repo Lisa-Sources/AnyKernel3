@@ -75,8 +75,7 @@ busybox: GPLv2
     https://github.com/osm0sis/android-busybox-ndk
     (pre-patched source tree used to build available upon request)
 
-fec: Apache License 2.0
-snapshotupdater_static: Apache License 2.0
+lptools_static: Apache License 2.0
 
     Copyright (C) 2020 Pierre-Hugues Husson <phh@phh.me>
 
@@ -94,10 +93,8 @@ snapshotupdater_static: Apache License 2.0
 
     Source not required, however, respective source is provided:
     https://github.com/phhusson/vendor_lptools
-    https://android.googlesource.com/platform/system/extras/+/master/verity/fec/
-    https://github.com/capntrips/SnapshotUpdater
 
-httools_static: MIT License
+httools_static: MIT
 
     Copyright (c) 2022 capntrips
 
