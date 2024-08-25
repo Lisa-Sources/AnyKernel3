@@ -37,9 +37,6 @@ passthrough() {
 if [ ! "$(getprop ro.zygote.disable_gl_preload
              getprop ro.hwui.disable_scissor_opt
              getprop persist.sys.fuse.passthrough.enable
-             getprop debug.hwui.renderer
-             getprop debug.renderengine.backend
-             getprop renderthread.skia.reduceopstasksplitting
              )" ]; then
 	ui_print "Remounting /system as rw..."
 	$home/tools/busybox mount -o rw,remount /system
@@ -47,9 +44,6 @@ if [ ! "$(getprop ro.zygote.disable_gl_preload
 	patch_prop /system/build.prop "ro.zygote.disable_gl_preload" "true"
   patch_prop /system/build.prop "ro.hwui.disable_scissor_opt" "false"
 	patch_prop /system/build.prop "persist.sys.fuse.passthrough.enable" "true"
-	patch_prop /system/build.prop "debug.hwui.renderer" "skiagl_threaded"
-	patch_prop /system/build.prop "debug.renderengine.backend" "skiaglthreaded"
-	patch_prop /system/build.prop "renderthread.skia.reduceopstasksplitting" "true"
 fi
 } # end passthrough patch
 
