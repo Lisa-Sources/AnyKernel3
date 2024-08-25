@@ -32,12 +32,29 @@ is_slot_device=1;
 ramdisk_compression=auto;
 patch_vbmeta_flag=auto;
 
-
-## AnyKernel methods (DO NOT CHANGE)
-# import patching functions/variables - see for reference
-. tools/ak3-core.sh && attributes;
+# begin passthrough patch
+passthrough() {
+if [ ! "$(getprop ro.zygote.disable_gl_preload
+             getprop ro.hwui.disable_scissor_opt
+             getprop persist.sys.fuse.passthrough.enable
+             getprop debug.hwui.renderer
+             getprop debug.renderengine.backend
+             getprop renderthread.skia.reduceopstasksplitting
+             )" ]; then
+	ui_print "Remounting /system as rw..."
+	$home/tools/busybox mount -o rw,remount /system
+	ui_print "Patching system's build prop"
+	patch_prop /system/build.prop "ro.zygote.disable_gl_preload" "true"
+  patch_prop /system/build.prop "ro.hwui.disable_scissor_opt" "false"
+	patch_prop /system/build.prop "persist.sys.fuse.passthrough.enable" "true"
+	patch_prop /system/build.prop "debug.hwui.renderer" "skiagl_threaded"
+	patch_prop /system/build.prop "debug.renderengine.backend" "skiaglthreaded"
+	patch_prop /system/build.prop "renderthread.skia.reduceopstasksplitting" "true"
+fi
+} # end passthrough patch
 
 # Optimize F2FS extension list (@arter97)
+f2fs() {
 if mountpoint -q /data; then
   for list_path in $(find /sys/fs/f2fs* -name extension_list); do
     hash="$(md5sum $list_path | sed 's/extenstion/extension/g' | cut -d' ' -f1)"
@@ -79,6 +96,11 @@ if mountpoint -q /data; then
     done
   done
 fi
+} # end f2fs
+
+## AnyKernel methods (DO NOT CHANGE)
+# import patching functions/variables - see for reference
+. tools/ak3-core.sh && passthrough && f2fs;
 
 ## AnyKernel boot install
 dump_boot;
@@ -107,5 +129,4 @@ split_boot; # skip unpack/repack ramdisk since we don't need vendor_ramdisk acce
 
 flash_boot;
 ## end vendor_boot install
-
 
