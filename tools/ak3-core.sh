@@ -1,7 +1,7 @@
 ### AnyKernel methods (DO NOT CHANGE)
 ## osm0sis @ xda-developers
 
-[ "$OUTFD" ] || OUTFD=$1;
+OUTFD=$1;
 
 # set up working directory variables
 [ "$home" ] || home=$PWD;
