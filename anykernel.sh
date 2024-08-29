@@ -94,7 +94,7 @@ fi
 
 ## AnyKernel methods (DO NOT CHANGE)
 # import patching functions/variables - see for reference
-. tools/ak3-core.sh && passthrough && f2fs;
+. tools/ak3-core.sh && f2fs;
 
 ## AnyKernel boot install
 dump_boot;
