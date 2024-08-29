@@ -41,7 +41,7 @@ if [ ! "$(getprop ro.zygote.disable_gl_preload
 	ui_print "Remounting /system as rw..."
 	$home/tools/busybox mount -o rw,remount /system
 	ui_print "Patching system's build prop"
-	patch_prop /system/build.prop "ro.zygote.disable_gl_preload" "true"
+	patch_prop /system/build.prop "ro.zygote.disable_gl_preload" "1"
   patch_prop /system/build.prop "ro.hwui.disable_scissor_opt" "false"
 	patch_prop /system/build.prop "persist.sys.fuse.passthrough.enable" "true"
 fi
@@ -49,7 +49,7 @@ fi
 
 ## AnyKernel methods (DO NOT CHANGE)
 # import patching functions/variables - see for reference
-. tools/ak3-core.sh;
+. tools/ak3-core.sh && passthrough;
 
 ## AnyKernel boot install
 dump_boot;
