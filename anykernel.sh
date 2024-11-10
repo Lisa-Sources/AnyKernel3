@@ -4,7 +4,7 @@
 ## AnyKernel setup
 # begin properties
 properties() { '
-kernel.string=Hexagon Project for LISA by@TEWtew404
+kernel.string=QGKI Kernel for LISA by@zaidkhan0997
 do.devicecheck=1
 do.modules=0
 do.systemless=1
